@@ -1,12 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- Load d3.js, v4 -->
+    <script src="https://d3js.org/d3.v6.js"></script>
 </head>
 <body>
-hello
+
+<!-- Visualization 2 -->
+<div id="milestone"></div>
+
 <script>
-    // write your d3 code here.. 
+    // VISUALIZATION 2 CODE
+    // set the dimensions and margins of the graph
+    var margin = {top: 20, right: 20, bottom: 30, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#milestone")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+    // load and format the data
+    d3.csv("./Vis2_Data.csv",
+        function(d){
+            console.log(d);
+            return { month : d3.timeParse("%b")(d.date), value : d.Meet }
+    }).then(
+        function(data) {
+            // Add X axis
+            const x = d3.scaleTime()
+            .domain(d3.extent(data, d => d.month))
+            .range([ 0, width ]);
+
+            svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom()
+                .tickFormat(d3.timeFormat("%b"))
+                .scale(x))
+
+            // Add Y axis
+            const y = d3.scaleLinear()
+            .domain( [0, 500])
+            .range([ height, 0 ]);
+
+            svg.append("g")
+            .call(d3.axisLeft(y));
+
+            // Add the line
+            svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "#69b3a2")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                .x(d => x(d.month))
+                .y(d => y(d.value))
+                )
+
+            // Add the points
+            svg
+            .append("g")
+            .selectAll("dot")
+            .data(data)
+            .join("circle")
+                .attr("cx", d => x(d.month))
+                .attr("cy", d => y(d.value))
+                .attr("r", 5)
+                .attr("fill", "#69b3a2")
+        }
+    )
+
+
 </script>
 </body>
 </html>
