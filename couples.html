@@ -6,18 +6,22 @@
 </head>
 <body>
 
+    <!-- Visualization 1 -->
+<div id="meet"></div>
+
 <!-- Visualization 2 -->
 <div id="milestone"></div>
 
 <script>
-    // VISUALIZATION 2 CODE
+
+    // VISUALIZATION 1 CODE
     // set the dimensions and margins of the graph
     var margin = {top: 20, right: 20, bottom: 30, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3.select("#milestone")
+    var svg = d3.select("#meet")
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -25,54 +29,113 @@
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
     // load and format the data
-    d3.csv("./Vis2_Data.csv",
+    d3.csv("./Vis1_Data.csv",
         function(d){
-            console.log(d);
-            return { month : d3.timeParse("%b")(d.date), value : d.Meet }
+            console.log("data", d);
+            return { month : d.Method, value : d.same_sex}
     }).then(
         function(data) {
             // Add X axis
-            const x = d3.scaleTime()
-            .domain(d3.extent(data, d => d.month))
-            .range([ 0, width ]);
+            const xScale = d3.scaleBand()
+            .domain(data.map(d => d.month))
+            .range([0, width])
+            .padding(0.1);
 
             svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom()
-                .tickFormat(d3.timeFormat("%b"))
-                .scale(x))
+            .call(d3.axisBottom(xScale))
 
             // Add Y axis
-            const y = d3.scaleLinear()
-            .domain( [0, 500])
+            const yScale = d3.scaleLinear()
+            .domain( [0, 0.35])
             .range([ height, 0 ]);
 
             svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(yScale));
 
-            // Add the line
-            svg.append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", "#69b3a2")
-            .attr("stroke-width", 1.5)
-            .attr("d", d3.line()
-                .x(d => x(d.month))
-                .y(d => y(d.value))
-                )
+            // Add bars 
+            const barGroup = svg.append("g") // create a group to keep the bars
+                .attr("class", "barGroup")
+                .attr("transform", `translate(${margin.left}, ${0})`); // shift all bars by the margin offset
 
-            // Add the points
-            svg
-            .append("g")
-            .selectAll("dot")
-            .data(data)
-            .join("circle")
-                .attr("cx", d => x(d.month))
-                .attr("cy", d => y(d.value))
-                .attr("r", 5)
-                .attr("fill", "#69b3a2")
+            // Add rectangles here by binding the totalPopDataEntries array with rect elements
+            barGroup.selectAll("rect")
+                .data(data)
+                .join("rect")
+                .attr("x", d => xScale(d.month))
+                .attr("fill", "#e83")
+                .attr("y", d => yScale(d.value))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => height - yScale(d.value))
+
         }
     )
+
+
+
+    // // VISUALIZATION 2 CODE
+    // // set the dimensions and margins of the graph
+    // var margin = {top: 20, right: 20, bottom: 30, left: 60},
+    // width = 460 - margin.left - margin.right,
+    // height = 400 - margin.top - margin.bottom;
+
+    // // append the svg object to the body of the page
+    // var svg = d3.select("#milestone")
+    //     .append("svg")
+    //         .attr("width", width + margin.left + margin.right)
+    //         .attr("height", height + margin.top + margin.bottom)
+    //     .append("g")
+    //         .attr("transform",
+    //             "translate(" + margin.left + "," + margin.top + ")");
+    // // load and format the data
+    // d3.csv("./Vis2_Data.csv",
+    //     function(d){
+    //         console.log(d);
+    //         return { month : d3.timeParse("%b")(d.date), value : d.Meet }
+    // }).then(
+    //     function(data) {
+    //         // Add X axis
+    //         const x = d3.scaleTime()
+    //         .domain(d3.extent(data, d => d.month))
+    //         .range([ 0, width ]);
+
+    //         svg.append("g")
+    //         .attr("transform", "translate(0," + height + ")")
+    //         .call(d3.axisBottom()
+    //             .tickFormat(d3.timeFormat("%b"))
+    //             .scale(x))
+
+    //         // Add Y axis
+    //         const y = d3.scaleLinear()
+    //         .domain( [0, 500])
+    //         .range([ height, 0 ]);
+
+    //         svg.append("g")
+    //         .call(d3.axisLeft(y));
+
+    //         // Add the line
+    //         svg.append("path")
+    //         .datum(data)
+    //         .attr("fill", "none")
+    //         .attr("stroke", "#69b3a2")
+    //         .attr("stroke-width", 1.5)
+    //         .attr("d", d3.line()
+    //             .x(d => x(d.month))
+    //             .y(d => y(d.value))
+    //             )
+
+    //         // Add the points
+    //         svg
+    //         .append("g")
+    //         .selectAll("dot")
+    //         .data(data)
+    //         .join("circle")
+    //             .attr("cx", d => x(d.month))
+    //             .attr("cy", d => y(d.value))
+    //             .attr("r", 5)
+    //             .attr("fill", "#69b3a2")
+    //     }
+    // )
 
 
 </script>
