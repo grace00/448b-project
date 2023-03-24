@@ -14,9 +14,6 @@
         flex-wrap: wrap;
     }
 
-    /* add non-traditional graphs */
-    /* add graph title */
-
     .dotsMeet:hover, .dotsBegin:hover, .dotsLive:hover, .dotsMarry:hover, .dotsSeparate:hover {
         stroke: black;
         stroke-width: 3px;
@@ -27,10 +24,18 @@
         display: flex;
     }
 
+    .graph-titles {
+        font-size: 20px;
+        margin-left: 280px;
+    }
+
 </style>
 <body>
 
 <!-- Visualization 2 -->
+<div class="graph-titles">
+    <p>Months in which Relationship Milestones are Met</p>
+</div>
 <div class="vis2">
     <div class="graphs">
         <div id="milestone"></div>
