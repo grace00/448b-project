@@ -115,6 +115,7 @@
                 .duration(200)
                 .style("opacity", 0)
             }
+            
             // Add the points - working code below
             svg
             .append("g")

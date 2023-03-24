@@ -15,14 +15,7 @@
         flex-wrap: wrap;
     }
 
-    /* add non-traditional graphs */
-    /* add graph title */
-
-    .dotsMeet:hover,
-    .dotsBegin:hover,
-    .dotsLive:hover,
-    .dotsMarry:hover,
-    .dotsSeparate:hover {
+    .dotsMeet:hover, .dotsBegin:hover, .dotsLive:hover, .dotsMarry:hover, .dotsSeparate:hover {
         stroke: black;
         stroke-width: 3px;
         cursor: pointer;
@@ -31,6 +24,12 @@
     .vis2 {
         display: flex;
     }
+
+    .graph-titles {
+        font-size: 20px;
+        margin-left: 280px;
+    }
+
 </style>
 
 <body>
@@ -158,7 +157,7 @@
                 .on("mousemove", moveTooltip)
                 .on("mouseout", hideTooltip)
                  // create a tooltip div that is hidden by default:
-            const tooltip = d3.select("#milestoneAge")
+            const tooltip = d3.select("#meet")
                 .append("div")
                 .style("opacity", 0)
                 .attr("class", "tooltip")
@@ -184,19 +183,22 @@
 
 
     </script>
-    <!-- Visualization 2 -->
-    <div class="vis2">
-        <div class="graphs">
-            <div id="meet"></div>
-            <div id="milestone"></div>
-            <div id="milestoneInter"></div>
-            <div id="milestoneSame"></div>
-            <div id="milestoneAge"></div>
-        </div>
-        <div>
-            <svg id="mylegend" height=300 width=450></svg>
-        </div>
 
+
+<!-- Visualization 2 -->
+<div id="meet"></div>
+<div class="graph-titles">
+    <p>Months in which Relationship Milestones are Met</p>
+</div>
+<div class="vis2">
+    <div class="graphs">
+        <div id="milestone"></div>
+        <div id="milestoneInter"></div>
+        <div id="milestoneSame"></div>
+        <div id="milestoneAge"></div>
+    </div>
+    <div>
+        <svg id="mylegend" height=300 width=450></svg>
     </div>
 
 
