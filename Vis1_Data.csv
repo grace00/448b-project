@@ -1,21 +1,21 @@
 Method,same_sex,large_age_diff,interracial,all
-Significant Other,0.0203,0.0188,0.0132,0.0655
+Through Family,0.0674,0.0963,0.0937,0.2093
+Through Friend,0.2391,0.1996,0.2266,0.1694
+Through Coworker,0.0977,0.2137,0.1555,0.1658
+Bar or Restaurant,0.266,0.2043,0.1742,0.1474
+Customer,0.0472,0.1174,0.0469,0.1304
+Met Online,0.3165,0.1245,0.1686,0.1295
+Through Neighbor,0.0236,0.0752,0.0618,0.1114
 School,0.0304,0.0094,0.118,0.0934
+Party,0.0775,0.0728,0.0768,0.0682
+Work Neighbors,0.0169,0.0141,0.0094,0.0673
+Significant Other,0.0203,0.0188,0.0132,0.0655
+Volunteer Organization,0.0506,0.0376,0.0431,0.0598
+Church,0.0068,0.0447,0.0525,0.0576
 College,0.0438,0.0353,0.0731,0.05
 Military,0.0034,0.0212,0.0263,0.0401
-Church,0.0068,0.0447,0.0525,0.0576
-Volunteer Organization,0.0506,0.0376,0.0431,0.0598
-Customer,0.0472,0.1174,0.0469,0.1304
-Bar or Restaurant,0.266,0.2043,0.1742,0.1474
-Party,0.0775,0.0728,0.0768,0.0682
 Public,0.0539,0.0752,0.06,0.0348
 Blind Date,0.0068,0.0118,0.0132,0.0217
 Vacation,0.0169,0.0094,0.0169,0.0111
-"Single Service, Not Online",0.0102,0.0047,0.0057,0.0057
 Business Trip,0.0034,0.0024,0.0038,0.0075
-Work Neighbors,0.0169,0.0141,0.0094,0.0673
-Met Online,0.3165,0.1245,0.1686,0.1295
-Through Family,0.0674,0.0963,0.0937,0.2093
-Through Friend,0.2391,0.1996,0.2266,0.1694
-Through Neighbor,0.0236,0.0752,0.0618,0.1114
-Through Coworker,0.0977,0.2137,0.1555,0.1658
+Single Service, Not Online,0.0102,0.0047,0.0057,0.0057
