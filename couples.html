@@ -41,7 +41,7 @@
         // set the dimensions and margins of the graph
         var margin_1 = { top: 20, right: 20, bottom: 60, left: 60 },
             width_1 = 460,
-            height_1 = 110;
+            height_1 = 130;
 
         // load and format the data
         d3.csv("./Vis1_Data.csv",
@@ -64,10 +64,6 @@
             var svg = container.append("svg");
             svg.attr("width", width_1 + margin_1.left + margin_1.right)
             svg.attr("height", height_1 + margin_1.top + margin_1.bottom)
-            svg.append("g")
-                .attr("transform",
-                    "translate(" + margin_1.left + "," + margin_1.top + ")");
-
 
             // Add X axis
             const xScale = d3.scaleBand()
@@ -76,7 +72,7 @@
                 .padding(0.2);
 
             svg.append("g")
-                .attr("transform", "translate(0," + height_1 + ")")
+            .attr("transform", `translate(${margin_1.left}, ${height_1})`)
                 .call(d3.axisBottom(xScale))
                 .selectAll("text")
                 .attr("y", 10)
@@ -88,60 +84,25 @@
             // Add Y axis
             const yScale = d3.scaleLinear()
                 .domain([0, 0.35])
-                .range([height_1, 0]);
-
+                .range([height_1, 20]);
+                
             svg.append("g")
-                .call(d3.axisLeft(yScale))
+                .call(d3.axisLeft(yScale).ticks())
+                .attr("transform", `translate(${margin_1.left}, ${0})`)
 
             // add small multiple title
             svg.append("text")
-                .attr("x", width_1 / 2)
+                .attr("x", width_1 / 2 + margin_1.left)
                 .attr("y", 12)
                 .attr("text-anchor", "middle")
                 .text(coupleType);
 
-            // add x-axis title
-            // svg.append("text")
-            //     .attr("x", width_1 / 2)
-            //     .attr("y", height_1 - 5)
-            //     .attr("text-anchor", "middle")
-            //     .attr("font-size", "14px")
-            //     .text("Year");
-
-            // // add y-axis title, remember that all transformations are around the (0, 0) origin
-            // svg.append("text")
-            //     .attr("x", -(margin_1.top + height_1 / 2))
-            //     .attr("y", 15)
-            //     .attr("transform", "rotate(-90)")  // rotate it by -90 degrees
-            //     .attr("text-anchor", "middle")
-            //     .attr("font-size", "14px")
-            //     .text("Proportion")
-
             // Add bars 
             const barGroup = svg.append("g") // create a group to keep the bars
                 .attr("class", "barGroup")
-                .attr("transform", `translate(${0}, ${0})`); // shift all bars by the margin offset
+                .attr("transform", `translate(${margin_1.left}, ${0})`); // shift all bars by the margin offset
 
-            const showTooltip = function (event, d) {
-                tooltip
-                    .transition()
-                    .duration(200)
-                tooltip
-                    .style("opacity", 1)
-                    .html(Math.round(d[coupleType] * 100) / 100)
-                    // .style("left", (event.x)+10 + "px")
-                    // .style("top", (event.y)+10 + "px")
-                    .attr("transform", `translate(${xScale(d.method) + positionOffest}, ${yScale(d[coupleType]) + positionOffest})`)
-                    .style("display", "block");
 
-            }
-
-            const hideTooltip = function (event, d) {
-                tooltip
-                    .transition()
-                    .duration(200)
-                    .style("opacity", 0)
-            }
             // Add rectangles here by binding the totalPopDataEntries array with rect elements
             barGroup.selectAll("rect")
                 .data(data)
@@ -158,11 +119,11 @@
                     let positionOffest = 8;
                     svg.select("#tooltip")
                         // move the tooltip to where the cursor is
-                        .attr("transform", `translate(${xScale(d.method) -15}, ${yScale(d[coupleType]) -25})`)
+                        .attr("transform", `translate(${xScale(d.method) + margin_1.left - 7}, ${yScale(d[coupleType]) - 10})`)
                         .style("display", "block");
                     d3.select(this)
                         .attr("stroke", "#333333")
-                        .attr("stroke-width", 2);
+                        .attr("stroke-width", 1);
                 })
                 .on("mouseout", function (event, d) {
                     svg.select("#tooltip").style("display", "none");
@@ -176,41 +137,28 @@
                 .append("text")
                 .attr("id", "tooltip-text")
                 .attr("x", 5)
-                .attr("y", 15)
+                .attr("y", 0)
                 .attr("font-size", "12px")
                 .attr("font-weight", "bold")
-                .attr("fill", "black")
-                .append("div")
-                .style("opacity", 0)
-                .attr("class", "tooltip")
-                .style("background-color", "black")
-                .style("border-radius", "5px")
-                .style("padding", "10px")
-                .style("color", "white")
-                .style("position", "absolute")
-
-
-
-
         }
     </script>
 
 
-    <!-- Visualization 2 -->
-    <div id="meet"></div>
-    <div class="graph-titles">
-        <p>Months in which Relationship Milestones are Met</p>
+<!-- Visualization 2 -->
+<div id="meet"></div>
+<div class="graph-titles">
+    <p>Months in which Relationship Milestones are Met</p>
+</div>
+<div class="vis2">
+    <div class="graphs">
+        <div id="milestone"></div>
+        <div id="milestoneInter"></div>
+        <div id="milestoneSame"></div>
+        <div id="milestoneAge"></div>
     </div>
-    <div class="vis2">
-        <div class="graphs">
-            <div id="milestone"></div>
-            <div id="milestoneInter"></div>
-            <div id="milestoneSame"></div>
-            <div id="milestoneAge"></div>
-        </div>
-        <div>
-            <svg id="mylegend" height=300 width=450></svg>
-        </div>
+    <div>
+        <svg id="mylegend" height=300 width=450></svg>
+    </div>
 
 
 
