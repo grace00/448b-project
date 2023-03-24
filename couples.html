@@ -15,7 +15,11 @@
         flex-wrap: wrap;
     }
 
-    .dotsMeet:hover, .dotsBegin:hover, .dotsLive:hover, .dotsMarry:hover, .dotsSeparate:hover {
+    .dotsMeet:hover,
+    .dotsBegin:hover,
+    .dotsLive:hover,
+    .dotsMarry:hover,
+    .dotsSeparate:hover {
         stroke: black;
         stroke-width: 3px;
         cursor: pointer;
@@ -29,7 +33,6 @@
         font-size: 20px;
         margin-left: 280px;
     }
-
 </style>
 
 <body>
@@ -65,7 +68,7 @@
                 .attr("transform",
                     "translate(" + margin_1.left + "," + margin_1.top + ")");
 
-                    
+
             // Add X axis
             const xScale = d3.scaleBand()
                 .domain(data.map(d => d.method))
@@ -119,28 +122,25 @@
                 .attr("class", "barGroup")
                 .attr("transform", `translate(${0}, ${0})`); // shift all bars by the margin offset
 
-                const showTooltip = function(event, d) {
+            const showTooltip = function (event, d) {
                 tooltip
-                .transition()
-                .duration(200)
+                    .transition()
+                    .duration(200)
                 tooltip
-                .style("opacity", 1)
-                .html("Freq: " + Math.round(d[coupleType] * 100) / 100)
-                .style("left", (event.x)+10 + "px")
-                .style("top", (event.y)+10 + "px")
+                    .style("opacity", 1)
+                    .html(Math.round(d[coupleType] * 100) / 100)
+                    // .style("left", (event.x)+10 + "px")
+                    // .style("top", (event.y)+10 + "px")
+                    .attr("transform", `translate(${xScale(d.method) + positionOffest}, ${yScale(d[coupleType]) + positionOffest})`)
+                    .style("display", "block");
+
             }
 
-            const moveTooltip = function(event, d) {
+            const hideTooltip = function (event, d) {
                 tooltip
-                .style("left", (event.x)+10 + "px")
-                .style("top", (event.y)+10 + "px")
-            }
-
-            const hideTooltip = function(event, d) {
-                tooltip
-                .transition()
-                .duration(200)
-                .style("opacity", 0)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 0)
             }
             // Add rectangles here by binding the totalPopDataEntries array with rect elements
             barGroup.selectAll("rect")
@@ -153,19 +153,21 @@
                 .attr("y", d => yScale(d[coupleType]))
                 .attr("width", xScale.bandwidth())
                 .attr("height", d => height_1 - yScale(d[coupleType] + 20))
-                .on("mouseover", showTooltip)
-                .on("mousemove", moveTooltip)
-                .on("mouseout", hideTooltip)
-                 // create a tooltip div that is hidden by default:
-            const tooltip = d3.select("#meet")
-                .append("div")
-                .style("opacity", 0)
-                .attr("class", "tooltip")
-                .style("background-color", "black")
-                .style("border-radius", "5px")
-                .style("padding", "10px")
-                .style("color", "white")
-                .style("position", "absolute")
+                .on("mouseover", function (event, d) {
+                    svg.select("#tooltip-text").text(`${Math.round(d[coupleType] * 100) / 100}`);
+                    let positionOffest = 8;
+                    svg.select("#tooltip")
+                        // move the tooltip to where the cursor is
+                        .attr("transform", `translate(${xScale(d.method) -15}, ${yScale(d[coupleType]) -25})`)
+                        .style("display", "block");
+                    d3.select(this)
+                        .attr("stroke", "#333333")
+                        .attr("stroke-width", 2);
+                })
+                .on("mouseout", function (event, d) {
+                    svg.select("#tooltip").style("display", "none");
+                    d3.select(this).attr("stroke", "none");
+                })
 
             /****** Tooltip Code ******/
             const tooltipGroup = svg.append("g")
@@ -177,36 +179,45 @@
                 .attr("y", 15)
                 .attr("font-size", "12px")
                 .attr("font-weight", "bold")
-                .attr("fill", "black");
-        
+                .attr("fill", "black")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "black")
+                .style("border-radius", "5px")
+                .style("padding", "10px")
+                .style("color", "white")
+                .style("position", "absolute")
+
+
+
+
         }
-
-
     </script>
 
 
-<!-- Visualization 2 -->
-<div id="meet"></div>
-<div class="graph-titles">
-    <p>Months in which Relationship Milestones are Met</p>
-</div>
-<div class="vis2">
-    <div class="graphs">
-        <div id="milestone"></div>
-        <div id="milestoneInter"></div>
-        <div id="milestoneSame"></div>
-        <div id="milestoneAge"></div>
+    <!-- Visualization 2 -->
+    <div id="meet"></div>
+    <div class="graph-titles">
+        <p>Months in which Relationship Milestones are Met</p>
     </div>
-    <div>
-        <svg id="mylegend" height=300 width=450></svg>
-    </div>
+    <div class="vis2">
+        <div class="graphs">
+            <div id="milestone"></div>
+            <div id="milestoneInter"></div>
+            <div id="milestoneSame"></div>
+            <div id="milestoneAge"></div>
+        </div>
+        <div>
+            <svg id="mylegend" height=300 width=450></svg>
+        </div>
 
 
 
-    <script src="./vis2all.js"></script>
-    <script src="./vis2inter.js"></script>
-    <script src="./vis2same.js"></script>
-    <script src="./vis2age.js"></script>
+        <script src="./vis2all.js"></script>
+        <script src="./vis2inter.js"></script>
+        <script src="./vis2same.js"></script>
+        <script src="./vis2age.js"></script>
 
 </body>
 
