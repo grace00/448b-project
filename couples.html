@@ -4,6 +4,7 @@
 <head>
     <!-- Load d3.js, v4 -->
     <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 </head>
 <style>
     .rects:hover {
@@ -186,7 +187,8 @@
 
 
 <!-- Visualization 2 -->
-<div id="meet"></div>
+<div>
+    <div id="meet"></div>
 <div class="graph-titles">
     <p>Months in which Relationship Milestones are Met</p>
 </div>
@@ -200,6 +202,7 @@
     <div>
         <svg id="mylegend" height=300 width=450></svg>
     </div>
+</div>
 
 
 
@@ -207,6 +210,49 @@
     <script src="./vis2inter.js"></script>
     <script src="./vis2same.js"></script>
     <script src="./vis2age.js"></script>
+
+<!-- Visualization 3 -->
+<div id="visualization3">
+    <br>
+    <div>
+        <span>Gender</span>
+    <select id="select-gender">
+        <option value="Male" selected="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+    </select>
+    <br>
+
+    <span>Sexual Orientation</span>
+    <select id="select-sexualorientation">
+        <option value="straight" selected="straight">Heterosexual or straight</option>
+        <option value="bisexual">Bisexual</option>
+        <option value="gay">Gay</option>
+        <option value="lesbian">Lesbian</option>
+    </select>
+    <br>
+
+    <span>Hispanic?</span>
+    <select id="select-hispanic">
+        <option value="Non-Hispanic" selected="Non-Hispanic">Non-Hispanic</option>
+        <option value="Hispanic">Hispanic</option>
+    </select>
+    <br>
+
+    <span>Race</span>
+    <select id="select-race">
+        <option value="American Indian, Aleut, or Eskimo">American Indian, Aleut, or Eskimo</option>
+        <option value="Asian or Pacific Islander" selected="Asian or Pacific Islander">Asian or Pacific Islander</option>
+        <option value="Black or African American">Black or African American</option>
+        <option value="White">White</option>
+        <option value="Other">Other</option>
+    </select>
+    <button type="button" id="submit-button">Submit</button>
+    <br>
+    </div>
+</div>
+
+<script src="./vis3all.js"></script>
 
 </body>
 
