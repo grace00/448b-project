@@ -232,7 +232,8 @@ TLDR:
 <div class="textsection">
     <div class="graph-titles"><p>So… Who and when will *you* marry?</p></div>
     <p>Now that you've learned a bit more about different types of couples and relationship milestones, you might be wondering, wait... what about me?</p>
-    <p>Select a combination of gender, sexual orientation, Hispanic/non-Hispanic, and race inputs. Click "Submit" to find out some statistics about your future marriage partner and marriage schedule!</p>
+    <p>Select a combination of gender, sexual orientation, Hispanic/non-Hispanic, and race inputs. Click "Submit" to find out some statistics about the likelihoods of your future marriage partner and marriage schedule!</p>
+    <p>(<i>Important disclaimer!</i> This data is based on the profiles of married couples from the Stanford dataset of 3,510 Americans. Hence, you likely want to treat this as a visualization of couple demographics among married couples in America, rather than a realistic simulation. Please also note that we are limited to the data included in this dataset, so some intersectional identities may not be represented in this interactive visualization. If they are included in the dataset but do not have many data points, the visualization may include them but look slightly off.)</p>
 </div>
 <div id="visualization3">
     <br>
@@ -241,7 +242,6 @@ TLDR:
     <select id="select-gender">
         <option value="Male" selected="Male">Male</option>
         <option value="Female">Female</option>
-        <option value="Other">Other</option>
     </select>
     <br>
 
@@ -264,17 +264,17 @@ TLDR:
     <span>Race</span>
     <select id="select-race">
         <option value="American Indian, Aleut, or Eskimo">American Indian, Aleut, or Eskimo</option>
-        <option value="Asian or Pacific Islander" selected="Asian or Pacific Islander">Asian or Pacific Islander</option>
-        <option value="Black or African American">Black or African American</option>
+        <option value="Asian or Pacific Islander">Asian or Pacific Islander</option>
+        <option value="Black or African American" selected="Black or African American">Black or African American</option>
         <option value="White">White</option>
         <option value="Other">Other</option>
     </select>
     <button type="button" id="submit-button">Submit</button>
     <br>
+    <p>(1) (left) <strong>Likelihood of partner being Hispanic/non-Hispanic</strong></p>
+    <p>(2) (center) <strong>Likelihood of partner's race</strong></p>
+    <p>(3) (right) <strong>Distribution of age when you will meet (green, left) and marry (blue, right) your partner</strong></p>
     </div>
-</div>
-<div class="textsection">
-    <p>(<i>Important disclaimer!</i> This data is based on the profiles of married couples from the Stanford dataset of 3,510 Americans. Hence, you likely want to treat this as a visualization of couple demographics among married couples in America, rather than a realistic simulation. Please also note that we are limited to the data included in this dataset, so some intersectional identities may not be represented in this interactive visualization.)</p>
 </div>
 
 <!--Documentation Section-->
