@@ -13,7 +13,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
                 
     // load and format the data
-    d3.csv("./Vis2_data.csv",
+    d3.csv("./Vis2_Data.csv",
         function(d){
             // console.log(d);
             return { month : d3.timeParse("%b")(d.date), value : d.value, m : d.milestone, color : parseInt(d.color) }
