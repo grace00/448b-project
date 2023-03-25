@@ -92,29 +92,7 @@
                 .attr("x", -margin.top-130)
                 .text("Frequency")
 
-            const showTooltip = function(event, d) {
-                tooltip
-                .transition()
-                .duration(200)
-                tooltip
-                .style("opacity", 1)
-                .html("Freq: " + d.value)
-                .style("left", (event.x)+10 + "px")
-                .style("top", (event.y)+10 + "px")
-            }
-
-            const moveTooltip = function(event, d) {
-                tooltip
-                .style("left", (event.x)+10 + "px")
-                .style("top", (event.y)+10 + "px")
-            }
-
-            const hideTooltip = function(event, d) {
-                tooltip
-                .transition()
-                .duration(200)
-                .style("opacity", 0)
-            }
+            
             // Add the points - working code below
             svg
             .append("g")
@@ -144,9 +122,9 @@
                         return 1
                     } else return 0.2
                 })
-            .on("mouseover", showTooltip)
-            .on("mousemove", moveTooltip)
-            .on("mouseout", hideTooltip)
+            // .on("mouseover", showTooltip)
+            // .on("mousemove", moveTooltip)
+            // .on("mouseout", hideTooltip)
 
             // create a tooltip div that is hidden by default:
             const tooltip = d3.select("#milestoneSame")
