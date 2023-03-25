@@ -125,40 +125,20 @@
 
             </p>
         </div>
-        <div>
-            <div id="meet"></div>
-        </div>
+
         <div>
             <div class="vis2">
+                <div class="graphs">
                 <div id="milestone"></div>
                 <div id="milestoneInter"></div>
                 <div id="milestoneSame"></div>
                 <div id="milestoneAge"></div>
+                </div>
+                <svg id="mylegend" height=300 width=250></svg>
             </div>
 
-<!-- Visualization 2 -->
-<div class="textsection">
-    <div class="graph-titles"><p>Which months do couples reach relationship milestones?</p></div>
-    <p>
-The multi-line graphs visualize the months in which couples typically meet relationship milestones, 
-such as when they first met, started dating, moved in together, got married, and separated. 
-Separation encompasses couples who are divorced, separated but not divorced, or broken up. 
-Each milestone is represented by a color-coded line with points, and you can interact with the graph by 
-toggling legend items to emphasize or dim specific milestones.
-    </br>
-    </br>
-Interestingly, relationship milestones happen most frequently in the months of June and September. 
-Furthermore, the time of milestone completions of nontraditional couples is not significantly different 
-from the general trend. You can compare the differences in trends between different types of nontraditional couples, 
-which can provide insights into how these couples approach their relationships.
-</br>
-</br>
-TLDR:
-<li>There is an jump in every milestone in June. </li>
-<li>Odds of meeting your future partner are the highest in June and September, lowest in the dreary winter months</li>
-<li>Least popular time to tie the knot? January.</li>
+</div>
 
-        </div>
 
 <!-- Visualization 3 -->
 <div class="textsection">
@@ -226,90 +206,6 @@ TLDR:
             </div>
         </div>
 
-        <!--Documentation Section-->
-        <div class="textsection">
-            <div class="graph-titles">
-                <p>Documentation</p>
-            </div>
-            <p>
-                We used the How Couples Meet and Stay Together 2017 dataset, which is a study by Stanford University
-                researchers of how 3,510 Americans met their spouses and romantic partners. We downloaded the data
-                <a href="https://data.stanford.edu/hcmst#download-data">here</a>
-                and preprocessed the data separately according to the specific visualization requirements. Since the
-                raw data attributes are coded, we used the
-                <a href="https://stacks.stanford.edu/file/druid:vt073cc9067/HCMST_2017_fresh_Codeboodk_v1.1a.pdf">2017
-                    Codebook</a>
-                and <a
-                    href="https://stacks.stanford.edu/file/druid:vt073cc9067/HCMST_2017_fresh_sample_survey_instrument.pdf">
-                    Survey Instrument</a> to map each field name
-                to the survey question it is representing.
-                </br>
-                </br>
-                For the first visualization of how couples meet, we used Google Sheets for exploratory data analysis
-                and processing. There were dedicated columns indicating same-sex and interracial relationships, so we
-                filtered by those to get the data for those couples. We added a calculated field to get the age
-                differences
-                between respondents and their partners, then filtered by age difference of &#62;=10 to get the data for
-                large age
-                gap couples. Then we honed in on the answers for Q24 in the survey and calculated the percentages of
-                respondents
-                who responded “yes” to each method of meeting.
-                </br>
-                </br>
-                For the milestone visualization, we imported the raw data to Tableau and generated exploratory data
-                visualizations using built-in filtering. To generate data for “All Couples,” for each milestone, we
-                filtered
-                for respondents that answered a date under Q21A-Q21D, which asks respondents which month and year did
-                they meet,
-                started a relationship, and various other milestones like moved-in or got married. We did the same
-                filtering for
-                interracial couples graphs, except that additionally, we also filtered for and counted the number of
-                respondents
-                that had “yes” under the “Interracial” column (the dataset came with this attribute so no further
-                preprocessing
-                was needed here). Similarly, for the same-sex graph, we filtered for respondents that answered “yes” to
-                the same-sex
-                question. For age difference &#62;=6 graph, we added a calculated field in Tableau sheet that filtered
-                for respondents
-                where the absolute value of their own age and partner&apos;s age is &#62;= 6. However, there are some
-                limitations to this
-                data visualization. We have excluded cases where respondents did not provide data on when they achieved
-                a
-                particular milestone, which can skew the results. Additionally, due to the small size of the dataset,
-                non-traditional
-                couple graphs may not be representative of the broader population, and the trends may not show true
-                correlations. Note:
-                the y-axes are different across different types of couples due to the varying sample sizes of couples
-                types
-
-            </p>
-        </div>
-
-        <!--References Section-->
-        <div class="textsection">
-            <div class="graph-titles">
-                <p>References</p>
-            </div>
-            <p>
-            <ul>
-                <li><a
-                        href="https://d3-graph-gallery.com/graph/line_several_group.html">https://d3-graph-gallery.com/graph/line_several_group.html</a>
-                </li>
-                <li><a
-                        href="https://d3-graph-gallery.com/graph/bubble_tooltip.html">https://d3-graph-gallery.com/graph/bubble_tooltip.html</a>
-                </li>
-                <li><a
-                        href="https://gist.github.com/d3noob/e99a762017060ce81c76">https://gist.github.com/d3noob/e99a762017060ce81c76</a>
-                </li>
-                <li><a
-                        href="https://d3-graph-gallery.com/graph/connectedscatter_basic.html">https://d3-graph-gallery.com/graph/connectedscatter_basic.html</a>
-                </li>
-                <li><a
-                        href="https://observablehq.com/d/e48f6dce22c7e643">https://observablehq.com/d/e48f6dce22c7e643</a>
-                </li>
-            </ul>
-            </p>
-        </div>
     </div>
 </div>
 <div class="textsection">
@@ -372,13 +268,122 @@ TLDR:
         </ul>
     </p>
 </div>
+<script>
+    // VISUALIZATION 1 CODE
+        // set the dimensions and margins of the graph
+        var margin_1 = { top: 20, right: 20, bottom: 10, left: 60 },
+            width_1 = 460,
+            height_1 = 130;
 
-<script src="./vis1.js"></script>
+        // load and format the data
+        d3.csv("./Vis1_Data.csv",
+            function (d) {
+                //console.log("data", d);
+                return { method: d.Method, "Same-sex": d.same_sex, "Large age difference": d.large_age_diff, "Interracial": d.interracial, "All": d.all }
+            }).then(
+                function (data) {
+                    const smallMultiple = d3.select("#meet");
+
+                    const meetColumns = ["All", "Same-sex", "Large age difference", "Interracial"]
+                    meetColumns.forEach(coupleType => {
+                        drawBarChartMeet(smallMultiple, coupleType, data, "Title");
+                    })
+                }
+            )
+
+        drawBarChartMeet = function (container, coupleType, data, chartTitle) {
+            // append the svg object to the body of the page
+            var svg = container.append("svg");
+            svg.attr("width", width_1 + margin_1.left + margin_1.right)
+            svg.attr("height", height_1 + margin_1.top + margin_1.bottom)
+
+            svg.attr("height", height_1 + margin_1.top + margin_1.bottom + 70)
+            svg.append("g")
+                .attr("transform",
+                    "translate(" + margin_1.left + "," + margin_1.top + ")");
+
+                    
+            // Add X axis
+            const xScale = d3.scaleBand()
+                .domain(data.map(d => d.method))
+                .range([0, width_1])
+                .padding(0.2);
+
+            svg.append("g")
+            .attr("transform", `translate(${margin_1.left}, ${height_1})`)
+                .call(d3.axisBottom(xScale))
+                .selectAll("text")
+                .attr("y", 10)
+                .attr("x", 9)
+                .attr("dy", ".35em")
+                .attr("transform", "rotate(30)")
+                .style("text-anchor", "start");
+
+            // Add Y axis
+            const yScale = d3.scaleLinear()
+                .domain([0, 0.35])
+                .range([height_1, 20]);
+                
+            svg.append("g")
+                .call(d3.axisLeft(yScale).ticks())
+                .attr("transform", `translate(${margin_1.left}, ${0})`)
+
+            // add small multiple title
+            svg.append("text")
+                .attr("x", width_1 / 2 + margin_1.left)
+                .attr("y", 12)
+                .attr("text-anchor", "middle")
+                .text(coupleType);
+
+            // Add bars 
+            const barGroup = svg.append("g") // create a group to keep the bars
+                .attr("class", "barGroup")
+                .attr("transform", `translate(${margin_1.left}, ${0})`); // shift all bars by the margin offset
+
+
+            // Add rectangles here by binding the totalPopDataEntries array with rect elements
+            barGroup.selectAll("rect")
+                .data(data)
+                .join("rect")
+                .attr("class", "path")
+                .attr("class", d => d.method)
+                .attr("x", d => xScale(d.method))
+                .attr("fill", "#B3B1EF")
+                .attr("y", d => yScale(d[coupleType]))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => height_1 - yScale(d[coupleType] + 20))
+                .on("mouseover", function (event, d) {
+                    svg.select("#tooltip-text").text(`${Math.round(d[coupleType] * 100) / 100}`);
+                    let positionOffest = 8;
+                    svg.select("#tooltip")
+                        // move the tooltip to where the cursor is
+                        .attr("transform", `translate(${xScale(d.method) + margin_1.left - 7}, ${yScale(d[coupleType]) - 10})`)
+                        .style("display", "block");
+                    d3.select(this)
+                        .attr("stroke", "#333333")
+                        .attr("stroke-width", 1);
+                })
+                .on("mouseout", function (event, d) {
+                    svg.select("#tooltip").style("display", "none");
+                    d3.select(this).attr("stroke", "none");
+                })
+
+            /****** Tooltip Code ******/
+            const tooltipGroup = svg.append("g")
+                .attr("id", "tooltip")
+                .style("display", "none")
+                .append("text")
+                .attr("id", "tooltip-text")
+                .attr("x", 5)
+                .attr("y", 0)
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+        }
+</script>
 <script src="./vis2all.js"></script>
 <script src="./vis2inter.js"></script>
 <script src="./vis2same.js"></script>
 <script src="./vis2age.js"></script>
-<script src="./vis3all.js"></script>
 
 </body>
 
