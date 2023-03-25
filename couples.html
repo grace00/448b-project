@@ -50,181 +50,93 @@
 </style>
 
 <body>
-    <script>
-        // VISUALIZATION 1 CODE
-        // set the dimensions and margins of the graph
-        var margin_1 = { top: 20, right: 20, bottom: 60, left: 60 },
-            width_1 = 460,
-            height_1 = 130;
 
-        // load and format the data
-        d3.csv("./Vis1_Data.csv",
-            function (d) {
-                //console.log("data", d);
-                return { method: d.Method, "Same-sex": d.same_sex, "Large age difference": d.large_age_diff, "Interracial": d.interracial, "All": d.all }
-            }).then(
-                function (data) {
-                    const smallMultiple = d3.select("#meet");
-
-                    const meetColumns = ["All", "Same-sex", "Large age difference", "Interracial"]
-                    meetColumns.forEach(coupleType => {
-                        drawBarChartMeet(smallMultiple, coupleType, data, "Title");
-                    })
-                }
-            )
-
-        drawBarChartMeet = function (container, coupleType, data, chartTitle) {
-            // append the svg object to the body of the page
-            var svg = container.append("svg");
-            svg.attr("width", width_1 + margin_1.left + margin_1.right)
-            svg.attr("height", height_1 + margin_1.top + margin_1.bottom)
-
-            svg.attr("height", height_1 + margin_1.top + margin_1.bottom + 70)
-            svg.append("g")
-                .attr("transform",
-                    "translate(" + margin_1.left + "," + margin_1.top + ")");
-
-                    
-            // Add X axis
-            const xScale = d3.scaleBand()
-                .domain(data.map(d => d.method))
-                .range([0, width_1])
-                .padding(0.2);
-
-            svg.append("g")
-            .attr("transform", `translate(${margin_1.left}, ${height_1})`)
-                .call(d3.axisBottom(xScale))
-                .selectAll("text")
-                .attr("y", 10)
-                .attr("x", 9)
-                .attr("dy", ".35em")
-                .attr("transform", "rotate(30)")
-                .style("text-anchor", "start");
-
-            // Add Y axis
-            const yScale = d3.scaleLinear()
-                .domain([0, 0.35])
-                .range([height_1, 20]);
-                
-            svg.append("g")
-                .call(d3.axisLeft(yScale).ticks())
-                .attr("transform", `translate(${margin_1.left}, ${0})`)
-
-            // add small multiple title
-            svg.append("text")
-                .attr("x", width_1 / 2 + margin_1.left)
-                .attr("y", 12)
-                .attr("text-anchor", "middle")
-                .text(coupleType);
-
-            // Add bars 
-            const barGroup = svg.append("g") // create a group to keep the bars
-                .attr("class", "barGroup")
-                .attr("transform", `translate(${margin_1.left}, ${0})`); // shift all bars by the margin offset
-
-
-            // Add rectangles here by binding the totalPopDataEntries array with rect elements
-            barGroup.selectAll("rect")
-                .data(data)
-                .join("rect")
-                .attr("class", "path")
-                .attr("class", d => d.method)
-                .attr("x", d => xScale(d.method))
-                .attr("fill", "#B3B1EF")
-                .attr("y", d => yScale(d[coupleType]))
-                .attr("width", xScale.bandwidth())
-                .attr("height", d => height_1 - yScale(d[coupleType] + 20))
-                .on("mouseover", function (event, d) {
-                    svg.select("#tooltip-text").text(`${Math.round(d[coupleType] * 100) / 100}`);
-                    let positionOffest = 8;
-                    svg.select("#tooltip")
-                        // move the tooltip to where the cursor is
-                        .attr("transform", `translate(${xScale(d.method) + margin_1.left - 7}, ${yScale(d[coupleType]) - 10})`)
-                        .style("display", "block");
-                    d3.select(this)
-                        .attr("stroke", "#333333")
-                        .attr("stroke-width", 1);
-                })
-                .on("mouseout", function (event, d) {
-                    svg.select("#tooltip").style("display", "none");
-                    d3.select(this).attr("stroke", "none");
-                })
-
-            /****** Tooltip Code ******/
-            const tooltipGroup = svg.append("g")
-                .attr("id", "tooltip")
-                .style("display", "none")
-                .append("text")
-                .attr("id", "tooltip-text")
-                .attr("x", 5)
-                .attr("y", 0)
-                .attr("font-size", "12px")
-                .attr("font-weight", "bold")
-        }
-    </script>
-
-<div class="textsection">
-    <div class="graph-titles article"><p>Uncovering the Mysteries of Modern Love: A Data-Driven Exploration</p></div>
-    <p>
-        Love is not a predictable thing. It comes when you least expect it, aphorisms, wisdom, and grandmas tell us. 
-        But we'll try to predict it anyway. Using data Stanford researchers gathered on 3,510 American 
-        adults, we will explore patterns and trends in how people find love. We will gain insight into when people meet 
-        their romantic partner, how they meet them, and who they are.
-    </p>
-</div>
-
-<!-- Visualization 1 -->
-
-<div class="textsection">
-    <div class="graph-titles"><p>How do couples meet?</p></div>
-    <p>
-        The most popular ways people met their significant others was through their family, friends, and coworkers.
-        If we look at non-traditional types of couples, we see that this pattern doesn&apos;t necessarily hold. 
-        Same-sex couples most commonly met online, followed by at a bar or restaurant and through a friend. 
-        If you are interested in getting with someone ten years older or younger than you, within legal age 
-        limits, start looking around at your workplace. Couples with a large age gap were most likely to meet through a coworker.
-        People in interracial relationships were most likely to have met through a friend, then at a bar or restaurant and online. 
-        Notably, across all couples the most popular way of meeting a future partner was through family, but that&apos;s much 
-        less likely to be the case for non-traditional couples.
-    </p>
-</div>
-<div id="meet"></div>
-
-<!-- Visualization 2 -->
-<div class="textsection">
-    <div class="graph-titles"><p>Which months do couples reach relationship milestones?</p></div>
-    <p>
-The multi-line graphs visualize the months in which couples typically meet relationship milestones, 
-such as when they first met, started dating, moved in together, got married, and separated. 
-Separation encompasses couples who are divorced, separated but not divorced, or broken up. 
-Each milestone is represented by a color-coded line with points, and you can interact with the graph by 
-toggling legend items to emphasize or dim specific milestones.
-    </br>
-    </br>
-Interestingly, relationship milestones happen most frequently in the months of June and September. 
-Furthermore, the time of milestone completions of nontraditional couples is not significantly different 
-from the general trend. You can compare the differences in trends between different types of nontraditional couples, 
-which can provide insights into how these couples approach their relationships.
-</br>
-</br>
-TLDR:
-<li>There is an jump in every milestone in June. </li>
-<li>Odds of meeting your future partner are the highest in June and September, lowest in the dreary winter months</li>
-<li>Least popular time to tie the knot? January.</li>
-
-    </p>
-</div>
-<div>
-    <div class="vis2">
-        <div class="graphs">
-            <div id="milestone"></div>
-            <div id="milestoneInter"></div>
-            <div id="milestoneSame"></div>
-            <div id="milestoneAge"></div>
+    <div id="main-container">
+        <div class="textsection">
+            <div class="graph-titles article">
+                <p>Uncovering the Mysteries of Modern Love: A Data-Driven Exploration</p>
+            </div>
+            <p>
+                Love is not a predictable thing. It comes when you least expect it, aphorisms, wisdom, and grandmas tell
+                us.
+                But we'll try to predict it anyway. Using data Stanford researchers gathered on 3,510 American
+                adults, we will explore patterns and trends in how people find love. We will gain insight into when
+                people meet
+                their romantic partner, how they meet them, and who they are.
+            </p>
         </div>
-        
-        <svg id="mylegend" height=300 width=250></svg>
-        
+
+        <!-- Visualization 1 -->
+
+        <div class="textsection">
+            <div class="graph-titles">
+                <p>How do couples meet?</p>
+            </div>
+            <p>
+                The most popular ways people met their significant others was through their family, friends, and
+                coworkers.
+            </p>
+            <p>
+                If we look at non-traditional types of couples, we see that this pattern doesn&apos;t necessarily hold.
+                Same-sex couples most commonly met online, followed by at a bar or restaurant and through a friend.
+            </p>
+            <p>
+                If you are interested in getting with someone ten years older or younger than you, within legal age
+                limits, start looking around at your workplace. Couples with a large age gap were most likely to meet
+                through a coworker.
+
+            </p>
+            <p>People in interracial relationships were most likely to have met through a friend, then at a bar or
+                restaurant and online.
+            </p>
+            Notably, across all couples the most popular way of meeting a future partner was through family, but
+            that&apos;s much
+            less likely to be the case for non-traditional couples.
+            </p>
+        </div>
+        <div id="meet"></div>
+
+        <!-- Visualization 2 -->
+        <div class="textsection">
+            <div class="graph-titles">
+                <p>Which months do couples reach relationship milestones?</p>
+            </div>
+            <p>
+                The multi-line graphs visualize the months in which couples typically meet relationship milestones,
+                such as when they first met, started dating, moved in together, got married, and separated.
+                Separation encompasses couples who are divorced, separated but not divorced, or broken up.
+                Each milestone is represented by a color-coded line with points, and you can interact with the graph by
+                toggling legend items to emphasize or dim specific milestones. Hovering over a point will show the exact
+                count of couples who reached that milestone during a particular month.
+                </br>
+                </br>
+                Interestingly, relationship milestones happen most frequently in the months of June and September.
+                Furthermore, the time of milestone completions of nontraditional couples is not significantly different
+                from the general trend. You can compare the differences in trends between different types of
+                nontraditional couples,
+                which can provide insights into how these couples approach their relationships.
+                </br>
+                </br>
+                TLDR:
+                <li>There is an jump in every milestone in June. </li>
+                <li>Odds of meeting your future partner are the highest in June and September, lowest in the dreary
+                    winter months</li>
+                <li>Least popular time to tie the knot? January.</li>
+
+            </p>
+        </div>
+
+        <div>
+            <div class="vis2">
+                <div class="graphs">
+                <div id="milestone"></div>
+                <div id="milestoneInter"></div>
+                <div id="milestoneSame"></div>
+                <div id="milestoneAge"></div>
+                </div>
+                <svg id="mylegend" height=300 width=250></svg>
+            </div>
+
 </div>
 
 
@@ -333,6 +245,118 @@ TLDR:
         </ul>
     </p>
 </div>
+<script>
+    // VISUALIZATION 1 CODE
+        // set the dimensions and margins of the graph
+        var margin_1 = { top: 20, right: 20, bottom: 10, left: 60 },
+            width_1 = 460,
+            height_1 = 130;
+
+        // load and format the data
+        d3.csv("./Vis1_Data.csv",
+            function (d) {
+                //console.log("data", d);
+                return { method: d.Method, "Same-sex": d.same_sex, "Large age difference": d.large_age_diff, "Interracial": d.interracial, "All": d.all }
+            }).then(
+                function (data) {
+                    const smallMultiple = d3.select("#meet");
+
+                    const meetColumns = ["All", "Same-sex", "Large age difference", "Interracial"]
+                    meetColumns.forEach(coupleType => {
+                        drawBarChartMeet(smallMultiple, coupleType, data, "Title");
+                    })
+                }
+            )
+
+        drawBarChartMeet = function (container, coupleType, data, chartTitle) {
+            // append the svg object to the body of the page
+            var svg = container.append("svg");
+            svg.attr("width", width_1 + margin_1.left + margin_1.right)
+            svg.attr("height", height_1 + margin_1.top + margin_1.bottom)
+
+            svg.attr("height", height_1 + margin_1.top + margin_1.bottom + 70)
+            svg.append("g")
+                .attr("transform",
+                    "translate(" + margin_1.left + "," + margin_1.top + ")");
+
+                    
+            // Add X axis
+            const xScale = d3.scaleBand()
+                .domain(data.map(d => d.method))
+                .range([0, width_1])
+                .padding(0.2);
+
+            svg.append("g")
+            .attr("transform", `translate(${margin_1.left}, ${height_1})`)
+                .call(d3.axisBottom(xScale))
+                .selectAll("text")
+                .attr("y", 10)
+                .attr("x", 9)
+                .attr("dy", ".35em")
+                .attr("transform", "rotate(30)")
+                .style("text-anchor", "start");
+
+            // Add Y axis
+            const yScale = d3.scaleLinear()
+                .domain([0, 0.35])
+                .range([height_1, 20]);
+                
+            svg.append("g")
+                .call(d3.axisLeft(yScale).ticks())
+                .attr("transform", `translate(${margin_1.left}, ${0})`)
+
+            // add small multiple title
+            svg.append("text")
+                .attr("x", width_1 / 2 + margin_1.left)
+                .attr("y", 12)
+                .attr("text-anchor", "middle")
+                .text(coupleType);
+
+            // Add bars 
+            const barGroup = svg.append("g") // create a group to keep the bars
+                .attr("class", "barGroup")
+                .attr("transform", `translate(${margin_1.left}, ${0})`); // shift all bars by the margin offset
+
+
+            // Add rectangles here by binding the totalPopDataEntries array with rect elements
+            barGroup.selectAll("rect")
+                .data(data)
+                .join("rect")
+                .attr("class", "path")
+                .attr("class", d => d.method)
+                .attr("x", d => xScale(d.method))
+                .attr("fill", "#B3B1EF")
+                .attr("y", d => yScale(d[coupleType]))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => height_1 - yScale(d[coupleType] + 20))
+                .on("mouseover", function (event, d) {
+                    svg.select("#tooltip-text").text(`${Math.round(d[coupleType] * 100) / 100}`);
+                    let positionOffest = 8;
+                    svg.select("#tooltip")
+                        // move the tooltip to where the cursor is
+                        .attr("transform", `translate(${xScale(d.method) + margin_1.left - 7}, ${yScale(d[coupleType]) - 10})`)
+                        .style("display", "block");
+                    d3.select(this)
+                        .attr("stroke", "#333333")
+                        .attr("stroke-width", 1);
+                })
+                .on("mouseout", function (event, d) {
+                    svg.select("#tooltip").style("display", "none");
+                    d3.select(this).attr("stroke", "none");
+                })
+
+            /****** Tooltip Code ******/
+            const tooltipGroup = svg.append("g")
+                .attr("id", "tooltip")
+                .style("display", "none")
+                .append("text")
+                .attr("id", "tooltip-text")
+                .attr("x", 5)
+                .attr("y", 0)
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+        }
+</script>
 
 <script src="./vis2all.js"></script>
 <script src="./vis2inter.js"></script>
