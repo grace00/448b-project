@@ -231,9 +231,9 @@ TLDR:
 
 <!-- Visualization 3 -->
 <div class="textsection">
-    <div class="graph-titles"><p>Who will you marry?</p></div>
-    <p>TODO
-    </p>
+    <div class="graph-titles"><p>So… Who and when will *you* marry?</p></div>
+    <p>Now that you've learned a bit more about different types of couples and relationship milestones, you might be wondering, wait... what about me?</p>
+    <p>Select a combination of gender, sexual orientation, Hispanic/non-Hispanic, and race inputs. Click "Submit" to find out some statistics about your future marriage partner and marriage schedule!</p>
 </div>
 <div id="visualization3">
     <br>
@@ -274,10 +274,13 @@ TLDR:
     <br>
     </div>
 </div>
+<div class="textsection">
+    <p>(<i>Important disclaimer!</i> This data is based on the profiles of married couples from the Stanford dataset of 3,510 Americans. Hence, you likely want to treat this as a visualization of couple demographics among married couples in America, rather than a realistic simulation. Please also note that we are limited to the data included in this dataset, so some intersectional identities may not be represented in this interactive visualization.)</p>
+</div>
 
 <!--Documentation Section-->
 <div class="textsection">
-    <div class="graph-titles"><p>Documentation</p></div>
+    <div class="graph-titles"><p>Data and Methods</p></div>
     <p>
         We used the How Couples Meet and Stay Together 2017 dataset, which is a study by Stanford University 
         researchers of how 3,510 Americans met their spouses and romantic partners. We downloaded the data 
@@ -311,7 +314,9 @@ TLDR:
         particular milestone, which can skew the results. Additionally, due to the small size of the dataset, non-traditional 
         couple graphs may not be representative of the broader population, and the trends may not show true correlations. Note: 
         the y-axes are different across different types of couples due to the varying sample sizes of couples types
-        
+    <br>
+    <br>
+    For the third visualization, we similarly used Google Sheets for exploratory data analysis and processing. We filtered for the dedicated columns indicating current marital status, respondent gender, respondent sexual orientation, respondent Hispanic/non-Hispanic, respondent race, partner gender, partner Hispanic/non-Hispanic, partner race, respondent age when the couple met, and respondent age when the couple married. There was some significant data cleaning here to do as well, including excluding empty cells and cells that indicated that the respondent refused to answer. Then, we wrote and ran a Python script. This Python script processed each row, iteratively building out a data structure that recorded all (data-represented) different combinations of demographics (namely, gender, sexual orientation, Hispanic/non-Hispanic, and race). Following this, we reformatted the data structure in a readable way for our later D3 code to use.
     </p>
 </div>
 
@@ -324,6 +329,8 @@ TLDR:
             <li><a href="https://d3-graph-gallery.com/graph/bubble_tooltip.html">https://d3-graph-gallery.com/graph/bubble_tooltip.html</a></li>
             <li><a href="https://gist.github.com/d3noob/e99a762017060ce81c76">https://gist.github.com/d3noob/e99a762017060ce81c76</a></li>
             <li><a href="https://d3-graph-gallery.com/graph/connectedscatter_basic.html">https://d3-graph-gallery.com/graph/connectedscatter_basic.html</a></li>
+            <li><a href="https://d3-graph-gallery.com/pie.html">https://d3-graph-gallery.com/pie.html</a></li>
+            <li><a href="https://d3-graph-gallery.com/boxplot.html">https://d3-graph-gallery.com/boxplot.html</a></li>
         </ul>
     </p>
 </div>
